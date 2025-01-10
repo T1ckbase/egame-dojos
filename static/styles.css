@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dojo-container, .dojo-card {
+  filter: blur(0px);
+  transition: filter 0.2s ease-out;
+}
+
+body:has(#level-filter > option[value='1']:checked) .dojo-container > .dojo-card:not([data-level='1']),
+body:has(#level-filter > option[value='2']:checked) .dojo-container > .dojo-card:not([data-level='2']),
+body:has(#level-filter > option[value='3']:checked) .dojo-container > .dojo-card:not([data-level='3']),
+body:has(#level-filter > option[value='4']:checked) .dojo-container > .dojo-card:not([data-level='4']),
+body:has(#level-filter > option[value='5']:checked) .dojo-container > .dojo-card:not([data-level='5']),
+body:has(#box-level-id-filter > option[value='1']:checked) .dojo-container > .dojo-card:not([data-box-level-id='1']),
+body:has(#box-level-id-filter > option[value='2']:checked) .dojo-container > .dojo-card:not([data-box-level-id='2']),
+body:has(#box-level-id-filter > option[value='3']:checked) .dojo-container > .dojo-card:not([data-box-level-id='3']),
+body:has(#box-level-id-filter > option[value='4']:checked) .dojo-container > .dojo-card:not([data-box-level-id='4']),
+body:has(#box-level-id-filter > option[value='5']:checked) .dojo-container > .dojo-card:not([data-box-level-id='5']) {
+  filter: blur(4px);
+  display: none;
+  transition: filter 0s;
+}
+
+body:has(#dojo-sort:hover:active) .dojo-card {
+  pointer-events: none;
+  user-select: none;
+  filter: blur(4px);
+  transition: filter 0s;
+}
+
+body:has(#dojo-sort:checked) .dojo-container,
+body:has(#dojo-sort:checked) .dojo-card {
+  transform: rotate(180deg);
+}
