@@ -11,7 +11,7 @@ import { start } from '$fresh/server.ts';
 import manifest from './fresh.gen.ts';
 import config from './fresh.config.ts';
 
-Deno.cron('Run once an hour, on the hour', '0 * * * *', () => {
+Deno.cron('Run once an hour on the hour', '0 * * * *', () => {
   console.log('Hello, cron!');
 });
 
