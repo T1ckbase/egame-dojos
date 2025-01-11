@@ -1,5 +1,5 @@
 import { randomIntegerBetween } from '@std/random';
-import { connectDB } from '../utils/db.ts';
+import { closeDB, connectDB } from '../utils/db.ts';
 import { Dojo, DojoRandom, DojoView, DojoWithImage } from '../types/egame.ts';
 import { AnyBulkWriteOperation } from 'mongodb';
 
@@ -139,4 +139,8 @@ export async function updateDojos() {
   console.log(`匹配的文檔數: ${result.matchedCount}`);
   console.log(`修改的文檔數: ${result.modifiedCount}`);
   console.log(`插入的文檔數: ${result.upsertedCount}`);
+
+  closeDB();
 }
+
+// updateDojos();

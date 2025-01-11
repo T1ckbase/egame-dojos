@@ -1,4 +1,4 @@
-import { connectDB } from '../utils/db.ts';
+import { closeDB, connectDB } from '../utils/db.ts';
 import { DojoContainer } from '../components/DojoContainer.tsx';
 import { DojoWithImage } from '../types/egame.ts';
 import { Handlers, PageProps } from '$fresh/server.ts';
@@ -9,6 +9,7 @@ export const handler: Handlers = {
     const db = await connectDB();
     const collection = db.collection<DojoWithImage>('dojos');
     const dojos = await collection.find({}, { sort: { _id: -1 } }).toArray();
+    closeDB();
     return ctx.render({ dojos });
   },
 };

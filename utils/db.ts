@@ -10,3 +10,8 @@ export async function connectDB() {
   }
   return client.db('egame');
 }
+
+export async function closeDB() {
+  await client.close();
+  console.log('MongoDB connection closed');
+}
