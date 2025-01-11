@@ -108,39 +108,41 @@ class EGameApi {
 }
 
 export async function updateDojos() {
-  const eGameApi = new EGameApi(JSESSIONID, egameId, `https://ap${randomIntegerBetween(8, 11)}.egame.kh.edu.tw`);
-  const c = await eGameApi.getDojoCount();
-  console.log('武館數量:', c);
-  const dojoData: DojoWithImage[] = [];
-  for (let i = 0; i < c; i++) {
-    try {
-      const dojoView = await eGameApi.getDojo(i);
-      const dojo = dojoView.dojo as DojoWithImage;
-      console.log('武館:', dojo._id);
-      const image = await eGameApi.getDojoImage(dojo.y, dojo._id);
-      // console.log('Image:', image);
-      dojo.image = image;
-      dojoData.push(dojo);
-    } catch {}
+  try {
+    const eGameApi = new EGameApi(JSESSIONID, egameId, `https://ap${randomIntegerBetween(8, 11)}.egame.kh.edu.tw`);
+    const c = await eGameApi.getDojoCount();
+    console.log('武館數量:', c);
+    const dojoData: DojoWithImage[] = [];
+    for (let i = 0; i < c; i++) {
+      try {
+        const dojoView = await eGameApi.getDojo(i);
+        const dojo = dojoView.dojo as DojoWithImage;
+        console.log('武館:', dojo._id);
+        const image = await eGameApi.getDojoImage(dojo.y, dojo._id);
+        // console.log('Image:', image);
+        dojo.image = image;
+        dojoData.push(dojo);
+      } catch {}
+    }
+
+    const db = await connectDB();
+    const collection = db.collection<DojoWithImage>('dojos');
+
+    const bulkOps: AnyBulkWriteOperation<DojoWithImage>[] = dojoData.map((dojo) => ({
+      updateOne: {
+        filter: { _id: dojo._id },
+        update: { $set: dojo },
+        upsert: true,
+      },
+    }));
+
+    const result = await collection.bulkWrite(bulkOps);
+    console.log(`匹配的文檔數: ${result.matchedCount}`);
+    console.log(`修改的文檔數: ${result.modifiedCount}`);
+    console.log(`插入的文檔數: ${result.upsertedCount}`);
+  } finally {
+    closeDB();
   }
-
-  const db = await connectDB();
-  const collection = db.collection<DojoWithImage>('dojos');
-
-  const bulkOps: AnyBulkWriteOperation<DojoWithImage>[] = dojoData.map((dojo) => ({
-    updateOne: {
-      filter: { _id: dojo._id },
-      update: { $set: dojo },
-      upsert: true,
-    },
-  }));
-
-  const result = await collection.bulkWrite(bulkOps);
-  console.log(`匹配的文檔數: ${result.matchedCount}`);
-  console.log(`修改的文檔數: ${result.modifiedCount}`);
-  console.log(`插入的文檔數: ${result.upsertedCount}`);
-
-  closeDB();
 }
 
 // updateDojos();
