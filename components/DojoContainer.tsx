@@ -3,9 +3,10 @@ import { DojoWithImage } from '../types/egame.ts';
 export function DojoContainer({ dojos }: { dojos: DojoWithImage[] }) {
   return (
     <div class='dojo-container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6'>
-      {dojos.filter((dojo) => dojo.isDesigned && dojo.isOpen && dojo.fund > 0).map((dojo) => (
+      {dojos.filter((dojo) => dojo.isDesigned && dojo.fund > 0).map((dojo) => (
         <a
           class='dojo-card block bg-white shadow-lg transition duration-200 overflow-hidden rounded-lg hover:shadow-xl hover:ring-2 hover:ring-yellow-400'
+          style={!dojo.isOpen ? { opacity: 0.5, background: '#DDD' } : undefined}
           key={dojo._id}
           href={`https://ap10.egame.kh.edu.tw/auth/main/#dojo/view/${dojo._id}`}
           target='_blank'

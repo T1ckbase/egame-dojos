@@ -62,7 +62,7 @@ export interface Dojo {
   fund: number;
   /** 武館聲望值 */
   dojoValue: number;
-  /** 是否被摧毀 */
+  /** 是否已經設計 */
   isDesigned: boolean;
   /** 是否公開 */
   isOpen: boolean;
